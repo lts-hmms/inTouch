@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "inTouch",
-    "slug": "inTouch",
+    "slug": "intouch",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "80b2c286-5095-42f8-a3b3-993c7e1dda53"
+      }
+    },
+    "owner": "jusue"
   }
 }
