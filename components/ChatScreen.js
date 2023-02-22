@@ -5,6 +5,7 @@ function ChatScreen (props) {
 
     useEffect(() => {
         let { name } = props.route.params;
+        /* displays the user's name in the navigation bar */
         props.navigation.setOptions({ title: name})
     }, []);
 
