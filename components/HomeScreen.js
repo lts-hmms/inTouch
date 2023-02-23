@@ -3,10 +3,10 @@ import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOp
 
 function HomeScreen (props) {
     const [name, setName] = useState('');
-    const [color, setColor] =useState('');
+    const [color, setColor] =useState('#fff');
     
     const backgroundColors = {
-        black: '#090C08',
+        gray: '#d3d3d3',
         pink: '#CD45E6',
         aurora: '#E6DC50',
         heraBlue: '#796fe8'
@@ -31,23 +31,32 @@ function HomeScreen (props) {
                         placeholder={'Please enter your name'}
                     />
                     <View style={styles.colorContainer}>
-                            <Text style={styles.text}>Choose your background color:</Text>
+                            <Text style={styles.text}>Choose background color:</Text>
                             <View style={styles.colors}>
                                 <TouchableOpacity 
-                                    style={[styles.circle, {backgroundColor: backgroundColors.black}]}
-                                    onPress={() => setColor(backgroundColors.black)}
+                                    style={[styles.circle, {backgroundColor: backgroundColors.pink},
+                                        color === backgroundColors.pink ? styles.colorSelected : {} 
+                                    ]}
+                                    onPress={() => setColor(backgroundColors.pink)}
+                                
                                 />
                                 <TouchableOpacity 
-                                    style={[styles.circle, {backgroundColor: backgroundColors.pink}]}
-                                    onPress={() => setColor(backgroundColors.purple)}
+                                    style={[styles.circle, {backgroundColor: backgroundColors.aurora},
+                                        color === backgroundColors.aurora ? styles.colorSelected : {} 
+                                    ]}
+                                    onPress={() => setColor(backgroundColors.aurora)}
                                 />
                                 <TouchableOpacity 
-                                    style={[styles.circle, {backgroundColor: backgroundColors.aurora}]}
-                                    onPress={() => setColor(backgroundColors.blue)}
+                                    style={[styles.circle, {backgroundColor: backgroundColors.heraBlue},
+                                        color === backgroundColors.heraBlue ? styles.colorSelected : {} 
+                                    ]}
+                                    onPress={() => setColor(backgroundColors.heraBlue)}
                                 />
                                 <TouchableOpacity 
-                                    style={[styles.circle, {backgroundColor: backgroundColors.heraBlue}]}
-                                    onPress={() => setColor(backgroundColors.green)}
+                                    style={[styles.circle, {backgroundColor: backgroundColors.gray},
+                                        color === backgroundColors.gray ? styles.colorSelected : {} 
+                                    ]}
+                                    onPress={() => setColor(backgroundColors.gray)}
                                 />
                             </View>
                     </View>
@@ -56,7 +65,7 @@ function HomeScreen (props) {
                         /* button navigates to chatScreen */
                         onPress={() => props.navigation.navigate('ChatScreen', { name: name, color: color})}
                         >
-                        <Text style={styles.buttonText}>Start Chatting</Text>
+                        <Text style={styles.buttonText}>Start Chat</Text>
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
@@ -99,18 +108,21 @@ const styles = StyleSheet.create({
         height: 60,
         borderColor: 'lightgrey',
         borderWidth: 1,
-        fontSize: 25,
+        fontSize: 28,
         fontWeight: '300',
-        color: '#757083',
-        opacity: '50%',
+        color: '#323232',
+        // opacity: '50%',
         textAlign: 'center',
+        marginBottom: 10
 
     },
     colorContainer: {
         margin: 10,
     },
     text: {
-        textAlign: 'center'
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#999999'
     },
     colors: {
         flexDirection: 'row',
@@ -122,15 +134,21 @@ const styles = StyleSheet.create({
         height: 60,
         borderRadius: 60/2,
     },
+    colorSelected: {
+        borderWidth: 2,
+        borderColor: '#999999'
+    
+    },
     button: {
-        backgroundColor: 'lightgrey',
+        marginTop:10,
+        backgroundColor: '#323232',
         height: 60,
         justifyContent: 'center',
         alignItems: 'center'
     },
     buttonText: {
-        fontSize: 25,
-        color: '#71797E'
+        fontSize: 35,
+        color: '#fff'
     }
     })
 
