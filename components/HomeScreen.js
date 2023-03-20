@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
 
 import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 
@@ -90,8 +90,11 @@ const HomeScreen = ({navigation}) => {
                         >
                         <Text style={styles.buttonText}>Start Chat</Text>
                     </TouchableOpacity>
+                    
                 </View>
             </ImageBackground>
+            { Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
+            { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>
     )
 }
