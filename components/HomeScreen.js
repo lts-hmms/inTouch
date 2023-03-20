@@ -22,8 +22,8 @@ const HomeScreen = ({navigation}) => {
             Alert.alert("Signed in Successfully!");
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
+            console.log(error.code);
+            console.log(error.message);
             Alert.alert("Unable to sign in, try later again.");
           });
         onAuthStateChanged(auth, (user) => {
