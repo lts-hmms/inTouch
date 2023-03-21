@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, Button, TextInput, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, ImageBackground, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
 
-function HomeScreen (props) {
+import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
+
+const HomeScreen = ({navigation}) => {
+    const auth = getAuth();
     const [name, setName] = useState('');
     const [color, setColor] =useState('#fff');
     
@@ -10,6 +13,26 @@ function HomeScreen (props) {
         pink: '#CD45E6',
         aurora: '#E6DC50',
         heraBlue: '#796fe8'
+    }
+
+    const signInUser = () => {
+        signInAnonymously(auth)
+        .then(result => {
+            navigation.navigate("ChatScreen", { userID: result.user.uid, color: color, name: name });
+            Alert.alert("Signed in Successfully!");
+          })
+          .catch((error) => {
+            console.log(error.code);
+            console.log(error.message);
+            Alert.alert("Unable to sign in, try later again.");
+          });
+        onAuthStateChanged(auth, (user) => {
+                if(user) {
+                    const uid = user.uid;
+                    navigation.navigate('ChatScreen', {userID: uid, name: name, color: color});
+                    console.log(uid)
+                } 
+        });
     }
     
     return (
@@ -63,12 +86,15 @@ function HomeScreen (props) {
                     <TouchableOpacity
                         style={styles.button}
                         /* button navigates to chatScreen */
-                        onPress={() => props.navigation.navigate('ChatScreen', { name: name, color: color})}
+                        onPress={signInUser}
                         >
                         <Text style={styles.buttonText}>Start Chat</Text>
                     </TouchableOpacity>
+                    
                 </View>
             </ImageBackground>
+            { Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
+            { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>
     )
 }

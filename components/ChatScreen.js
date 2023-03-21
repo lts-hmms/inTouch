@@ -1,37 +1,36 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+import { useState, useEffect} from 'react';
 
-function ChatScreen (props) {
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
+
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+
+import { collection, onSnapshot, addDoc, query, orderBy } from 'firebase/firestore';
+
+const ChatScreen = ({route, navigation, db}) => {
+
     const [messages, setMessages] = useState([]);
-    let { color } = props.route.params
+    const { color, name, userID } = route.params;
 
-    useEffect(() => {
-        let { name } = props.route.params;
-        props.navigation.setOptions({ title: name});
-        setMessages([
-            {
-                _id:1,
-                text: 'Hello Developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-            {
-                _id:2,
-                text: `${name} entered the chat.`,
-                createdAt: new Date(),
-                system: true,
-            },
-        ])
-    }, []);
+       useEffect(() => {
+        navigation.setOptions({ title: name});
+        const q = query(collection(db, 'messages'), orderBy('createdAt', 'desc'))
+        const fetchedMessages = onSnapshot(q, (documentsSnapshot) => {
+            let newMessages = [];
+            documentsSnapshot.forEach(doc => {
+                newMessages.push({id: doc.id, ...doc.data(), createdAt: new Date(doc.data().createdAt.toDate())})
+            })
+            setMessages(newMessages);
+        })
+        // clean up code
+        return () => {
+            if (fetchedMessages) fetchedMessages();
+        }
+        }, []);
+    
+    const onSend = (newMessages) => {
+        addDoc(collection(db, 'messages'), newMessages[0])
+    };
 
-    const onSend = useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-    }, []);
 
     const renderBubble = (props) => {
         return (
@@ -39,12 +38,9 @@ function ChatScreen (props) {
                 wrapperStyle={{
                     left: {
                         backgroundColor: '#fff'
-                        
-                        
                     },
                     right: {
                         backgroundColor:'#000',
-                        
                     }
                 }}
             />
@@ -55,16 +51,20 @@ function ChatScreen (props) {
         <View style={[styles.container, {backgroundColor: color}]}>
             <GiftedChat
                 renderBubble={renderBubble}
+                showAvatarForEveryMessage={true}
                 messages={messages}
                 onSend={messages => onSend(messages)}
                 user={{
-                    _id: 1,
+                    _id: userID,
+                    name: name
                 }}
             />
-            { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null
-            }
+            {/* solves issue on older androids and Iphones, which hides message field while typing */}
+            { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
+            
+            
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -72,7 +72,17 @@ const styles = StyleSheet.create({
         flex:1,
         color: '#323232'
     },
+    text: {
+        textAlign: "center",
+        marginTop: 40,
+        color: "#fff",
+        fontWeight: "600",
+        fontSize: 20,
+      },
     
 })
 
 export default ChatScreen; 
+       
+
+   
