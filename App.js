@@ -24,6 +24,8 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs(["AsyncStorage has been extracted from"]);
 
 const App = () => {
+  const connectionStatus = useNetInfo();
+
 const firebaseConfig = {
   apiKey: "AIzaSyBYva35xeORJXCMpG2Dr9H2GPnKCaRcQ64",
   authDomain: "intouch-chatapp.firebaseapp.com",
