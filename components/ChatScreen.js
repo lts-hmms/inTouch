@@ -12,6 +12,7 @@ const ChatScreen = ({route, navigation, db, isConnected}) => {
 
     const [messages, setMessages] = useState([]);
     const { color, name, userID } = route.params;
+    let fetchedMessages;
 
     const loadCachedMessages = async () => {
         const cachedMessages = await AsyncStorage.getItem('messages') || [];
@@ -19,7 +20,7 @@ const ChatScreen = ({route, navigation, db, isConnected}) => {
     }
 
        useEffect(() => {
-        let fetchedMessages;
+       
         if (isConnected) {
 
             // unregister current onSnapshot listener to avoid duplicate listeners when useEffect code is re-executed
