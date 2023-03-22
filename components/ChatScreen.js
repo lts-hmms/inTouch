@@ -34,6 +34,7 @@ const ChatScreen = ({route, navigation, db, isConnected}) => {
             documentsSnapshot.forEach(doc => {
                 newMessages.push({id: doc.id, ...doc.data(), createdAt: new Date(doc.data().createdAt.toDate())})
             })
+            cacheMessages(newMessages);
             setMessages(newMessages);
         });
         } else {
