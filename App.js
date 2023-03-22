@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import 'react-native-gesture-handler';
 
@@ -39,8 +38,6 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Cloud Firestore and get reference to service
 const db = getFirestore(app);
-
-const connectionStatus = useNetInfo();
 
 useEffect(() => {
   if (connectionStatus.isConnected === false) {
