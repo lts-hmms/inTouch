@@ -21,7 +21,7 @@ const ChatScreen = ({route, navigation, db, isConnected}) => {
 
        useEffect(() => {
        
-        if (isConnected) {
+        if (isConnected === true) {
 
             // unregister current onSnapshot listener to avoid duplicate listeners when useEffect code is re-executed
             if (fetchedMessages) fetchedMessages();
