@@ -15,6 +15,7 @@ const Stack = createNativeStackNavigator();
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore, disableNetwork, enableNetwork } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
 // import the screens we want to navigate
 import HomeScreen from './components/HomeScreen';
@@ -41,6 +42,8 @@ const app = initializeApp(firebaseConfig);
 // Initialize Cloud Firestore and get reference to service
 const db = getFirestore(app);
 
+const storage = getStorage(app);
+
 useEffect(() => {
   if (connectionStatus.isConnected === false) {
     Alert.alert('No Internet Connection');
@@ -62,7 +65,7 @@ useEffect(() => {
         <Stack.Screen
           name='ChatScreen'
         >
-          {props => <ChatScreen isConnected={connectionStatus.isConnected} db={db} {...props} />}
+          {props => <ChatScreen isConnected={connectionStatus.isConnected} db={db} storage={storage} {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

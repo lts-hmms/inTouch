@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomActions from './CustomActions';
 import MapView from 'react-native-maps';
 
-const ChatScreen = ({route, navigation, db, isConnected}) => {
+const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
 
     const [messages, setMessages] = useState([]);
     const { color, name, userID } = route.params;
@@ -81,7 +81,7 @@ const ChatScreen = ({route, navigation, db, isConnected}) => {
     }
 
     renderCustomActions = (props) => {
-        return <CustomActions onSend={onSend} {...props} /> 
+        return <CustomActions onSend={onSend} storage={storage} userID={userID}{...props} /> 
     }
 
     renderCustomView = (props) => {
@@ -99,7 +99,7 @@ const ChatScreen = ({route, navigation, db, isConnected}) => {
                 />
             )
         }
-        return null;
+      return null;
     }
 
     return (
