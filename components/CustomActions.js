@@ -1,12 +1,14 @@
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { View, Text, StyleSheet, Alert } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import * as Location from 'expo-location';
 import * as ImagePicker from 'expo-image-picker';
+import * as MediaLibrary from 'expo-media-library';
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-const CustomActions = ({ wrapperStyle, iconTextStyle, onSend}) => {
+const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage, userID }) => {
 
     const actionSheet = useActionSheet();
+
     const onActionPress = () => {
         const options = ['Choose From Library', 'Take Picture', 'Send Location', 'Cancel'];
         const cancelButtonIndex = options.length - 1;
@@ -32,6 +34,49 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend}) => {
             }
         )
     }
+
+    const pickImage = async () => {
+        let permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (permission?.granted) {
+            let result = await ImagePicker.launchImageLibraryAsync();
+            if (!result.canceled) { 
+                const imageURI = result.assets[0].uri;
+                uploadAndSendImage(imageURI);   
+            }
+            else Alert.alert('Permission denied');
+        }
+    }
+
+    const takePicture = async () => {
+        let permissions = await ImagePicker.requestCameraPermissionsAsync();
+        if (permissions?.granted) {
+            let result = await ImagePicker.launchCameraAsync();
+            if (!result.canceled) {
+                const imageURI = result.assets[0].uri;
+                uploadAndSendImage(imageURI);   
+                let MediaLibraryPermission = await MediaLibrary.requestPermissionsAsync();
+                if (MediaLibraryPermission?.granted) await MediaLibrary.saveToLibraryAsync(result.assets[0].uri);
+            }else Alert.alert('Permission denied');
+        } 
+    }
+
+    const generateReference = (uri) => {
+        const timestamp = new Date().getTime();
+        const imageName = uri.split('/')[uri.split('/').length - 1];
+        return `${userID}-${timestamp}-${imageName}`;
+    }
+
+    const uploadAndSendImage = async (imageURI) => {
+        const uniqueRefString = generateReference(imageURI);
+        const newUploadRef = ref(storage, uniqueRefString);
+        const response = await fetch(imageURI);
+        const blob = await response.blob();
+        uploadBytes(newUploadRef, blob).then(async(snapshot) => {
+            const imageURL = await getDownloadURL(snapshot.ref)
+            onSend({image: imageURL});
+        });
+    }
+
 
     const getLocation = async () => {
         let permission = await Location.requestForegroundPermissionsAsync();
