@@ -93,6 +93,7 @@ const HomeScreen = ({navigation}) => {
                     
                 </View>
             </ImageBackground>
+            {/* solves issue on iphones and older androids, which hides message field while typing */}
             { Platform.OS === 'ios' ? <KeyboardAvoidingView behavior="padding" /> : null}
             { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
         </View>

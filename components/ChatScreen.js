@@ -18,7 +18,7 @@ const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
     }
 
        useEffect(() => {
-       
+        // if no internet connection, load cached messages
         if (isConnected === true) {
 
             // unregister current onSnapshot listener to avoid duplicate listeners when useEffect code is re-executed
@@ -26,6 +26,7 @@ const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
             fetchedMessages = null;
 
             navigation.setOptions({ title: name});
+            // An initial call using callback creates a document snapshot immediately with the current contents of the collection. Each time the contents change, another call updates the collection snapshot.
             const q = query(collection(db, 'messages'), orderBy('createdAt', 'desc'))
             fetchedMessages = onSnapshot(q, (documentsSnapshot) => {
             let newMessages = [];
@@ -52,7 +53,7 @@ const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
                 console.log(error.messages);
             }
         }
-    
+    // add messages to firebase
     const onSend = (newMessages) => {
         addDoc(collection(db, 'messages'), newMessages[0])
     };
@@ -72,7 +73,7 @@ const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
             />
         )
     }
-
+    // hide input toolbar if no internet connection
     const renderInputToolbar = (props) => {
         if (isConnected === true) 
             return <InputToolbar {...props} />
@@ -117,7 +118,7 @@ const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
                     name: name
                 }}
             />
-            {/* solves issue on older androids and Iphones, which hides message field while typing */}
+            {/* solves issue on older androids, which hides message field while typing */}
             { Platform.OS === 'android' ? <KeyboardAvoidingView behavior="height" /> : null}
             
             
