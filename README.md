@@ -37,14 +37,14 @@ _It's planned to integrate the ability to record and send voice messages._
 - At 'Settings' -> 'General' -> 'Your apps' -> 'Firestore for Web' generate your configuration object.
 - In the `App.js` file replace the `firebaseConfig` variable with the configuration info from your own Firestore database:
 
-```
+```js
 firebase.initializeApp({
-  apiKey: 'your-api-key',
-  authDomain: 'your-authdomain',
-  projectId: 'your-project-id',
-  storageBucket: 'your-storage-bucket',
-  messagingSenderId: 'your-messaging-sender-id',
-  appId: 'your-app-id',
+  apiKey: "your-api-key",
+  authDomain: "your-authdomain",
+  projectId: "your-project-id",
+  storageBucket: "your-storage-bucket",
+  messagingSenderId: "your-messaging-sender-id",
+  appId: "your-app-id",
 });
 ```
 
@@ -56,32 +56,29 @@ firebase.initializeApp({
 
 ## Dependencies
 
+```json
+{
+  "@expo/react-native-action-sheet": "^4.0.1",
+  "@react-native-async-storage/async-storage": "~1.17.3",
+  "@react-native-community/masked-view": "^0.1.11",
+  "@react-native-community/netinfo": "9.3.5",
+  "@react-navigation/native": "^6.1.6",
+  "@react-navigation/native-stack": "^6.9.12",
+  "expo": "~47.0.12",
+  "expo-image-picker": "~14.0.2",
+  "expo-location": "~15.0.1",
+  "expo-status-bar": "~1.4.2",
+  "firebase": "^9.13.0",
+  "react": "18.1.0",
+  "react-native": "0.70.5",
+  "react-native-gesture-handler": "~2.8.0",
+  "react-native-gifted-chat": "^1.1.1",
+  "react-native-maps": "^1.3.2",
+  "react-native-reanimated": "~2.12.0",
+  "react-native-safe-area-context": "4.4.1",
+  "react-native-screens": "~3.18.0",
+  "react-navigation": "^4.4.4",
+  "expo-media-library": "~15.0.0",
+  "expo-av": "~13.0.3"
+}
 ```
-"@expo/react-native-action-sheet": "^4.0.1",
-"@react-native-async-storage/async-storage": "~1.17.3",
-"@react-native-community/masked-view": "^0.1.11",
-"@react-native-community/netinfo": "9.3.5",
-"@react-navigation/native": "^6.1.6",
-"@react-navigation/native-stack": "^6.9.12",
-"expo": "~47.0.12",
-"expo-image-picker": "~14.0.2",
-"expo-location": "~15.0.1",
-"expo-status-bar": "~1.4.2",
-"firebase": "^9.13.0",
-"react": "18.1.0",
-"react-native": "0.70.5",
-"react-native-gesture-handler": "~2.8.0",
-"react-native-gifted-chat": "^1.1.1",
-"react-native-maps": "^1.3.2",
-"react-native-reanimated": "~2.12.0",
-"react-native-safe-area-context": "4.4.1",
-"react-native-screens": "~3.18.0",
-"react-navigation": "^4.4.4",
-"expo-media-library": "~15.0.0",
-"expo-av": "~13.0.3"
-```
-
-## Author
-
-- [Website](https://judith.sueggeler.com)
-- [LinkedIn](https://linkedin.com/in/judith-sueggeler/)
