@@ -17,7 +17,7 @@ const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
         setMessages(JSON.parse(cachedMessages));
     }
 
-       useEffect(() => {
+    useEffect(() => {
         // if no internet connection, load cached messages
         if (isConnected === true) {
 
@@ -35,24 +35,23 @@ const ChatScreen = ({route, navigation, db, isConnected, storage}) => {
             })
             cacheMessages(newMessages);
             setMessages(newMessages);
-        });
+            });
         } else {
             loadCachedMessages();
         }
-        
         // clean up code
         return () => {
             if (fetchedMessages) fetchedMessages();
         }
-        }, [isConnected]);
+    }, [isConnected]);
 
-        const cacheMessages = async (messagesToChache) => {
-            try {
-                await AsyncStorage.setItem('messages', JSON.stringify(messagesToChache));
-            } catch (error) {
-                console.log(error.messages);
-            }
+    const cacheMessages = async (messagesToChache) => {
+        try {
+            await AsyncStorage.setItem('messages', JSON.stringify(messagesToChache));
+        } catch (error) {
+            console.log(error.messages);
         }
+    }
     // add messages to firebase
     const onSend = (newMessages) => {
         addDoc(collection(db, 'messages'), newMessages[0])
