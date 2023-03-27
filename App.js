@@ -1,22 +1,19 @@
 import { StyleSheet } from 'react-native';
 import 'react-native-gesture-handler';
 
-// import react Navigation
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-// Package for Detecting a Network Connection
 import { useNetInfo }from '@react-native-community/netinfo';
 import { useEffect } from 'react';
 import { Alert } from 'react-native';
 
-// Create the navigator
 const Stack = createNativeStackNavigator();
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore, disableNetwork, enableNetwork } from 'firebase/firestore';
+import { getStorage } from 'firebase/storage';
 
-// import the screens we want to navigate
 import HomeScreen from './components/HomeScreen';
 import ChatScreen from './components/ChatScreen';
 
@@ -35,11 +32,11 @@ const firebaseConfig = {
   appId: "1:577035920234:web:1cc55f3f07098b4f26fb13"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Cloud Firestore and get reference to service
 const db = getFirestore(app);
+
+const storage = getStorage(app);
 
 useEffect(() => {
   if (connectionStatus.isConnected === false) {
@@ -62,7 +59,7 @@ useEffect(() => {
         <Stack.Screen
           name='ChatScreen'
         >
-          {props => <ChatScreen isConnected={connectionStatus.isConnected} db={db} {...props} />}
+          {props => <ChatScreen isConnected={connectionStatus.isConnected} db={db} storage={storage} {...props} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
