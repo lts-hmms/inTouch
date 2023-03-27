@@ -56,7 +56,7 @@ firebase.initializeApp({
 
 ## Dependencies
 
-´´´
+```
 "@expo/react-native-action-sheet": "^4.0.1",
 "@react-native-async-storage/async-storage": "~1.17.3",
 "@react-native-community/masked-view": "^0.1.11",
@@ -79,7 +79,7 @@ firebase.initializeApp({
 "react-navigation": "^4.4.4",
 "expo-media-library": "~15.0.0",
 "expo-av": "~13.0.3"
-´´´
+```
 
 ## Author
 
